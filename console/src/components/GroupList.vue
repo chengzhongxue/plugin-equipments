@@ -12,8 +12,8 @@ import {
   VDropdownItem,
 } from "@halo-dev/components";
 import GroupEditingModal from "./GroupEditingModal.vue";
-import type { PhotoGroup } from "@/types";
-import type { PhotoGroupList } from "@/types";
+import type { EquipmentGroup } from "@/types";
+import type { EquipmentGroupList } from "@/types";
 import { ref } from "vue";
 import Draggable from "vuedraggable";
 import apiClient from "@/utils/api-client";
@@ -27,15 +27,15 @@ const emit = defineEmits<{
 const loading = ref(false);
 const groupEditingModal = ref(false);
 
-const updateGroup = ref<PhotoGroup>();
+const updateGroup = ref<EquipmentGroup>();
 
-const selectedGroup = useRouteQuery<string>("photo-group");
+const selectedGroup = useRouteQuery<string>("equipment-group");
 
-const { data: groups, refetch } = useQuery<PhotoGroup[]>({
+const { data: groups, refetch } = useQuery<EquipmentGroup[]>({
   queryKey: [],
   queryFn: async () => {
-    const { data } = await apiClient.get<PhotoGroupList>(
-      "/apis/api.plugin.halo.run/v1alpha1/plugins/PluginPhotos/photogroups"
+    const { data } = await apiClient.get<EquipmentGroupList>(
+      "/apis/api.plugin.halo.run/v1alpha1/plugins/PluginEquipments/equipmentgroups"
     );
     return data.items
       .map((group) => {
@@ -76,12 +76,12 @@ const { data: groups, refetch } = useQuery<PhotoGroup[]>({
 
 const handleSaveInBatch = async () => {
   try {
-    const promises = groups.value?.map((group: PhotoGroup, index) => {
+    const promises = groups.value?.map((group: EquipmentGroup, index) => {
       if (group.spec) {
         group.spec.priority = index;
       }
       return apiClient.put(
-        `/apis/core.halo.run/v1alpha1/photogroups/${group.metadata.name}`,
+        `/apis/core.halo.run/v1alpha1/equipmentgroups/${group.metadata.name}`,
         group
       );
     });
@@ -95,30 +95,30 @@ const handleSaveInBatch = async () => {
   }
 };
 
-const handleDelete = async (group: PhotoGroup) => {
+const handleDelete = async (group: EquipmentGroup) => {
   Dialog.warning({
     title: "确定要删除该分组吗？",
-    description: "将同时删除该分组下的所有图片，该操作不可恢复。",
+    description: "将同时删除该分组下的所有装备，该操作不可恢复。",
     confirmType: "danger",
     onConfirm: async () => {
       try {
         await apiClient.delete(
-          `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginPhotos/photogroups/${group.metadata.name}`
+          `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginEquipments/equipmentgroups/${group.metadata.name}`
         );
         refetch();
       } catch (e) {
-        console.error("Failed to delete photo group", e);
+        console.error("Failed to delete equipment group", e);
       }
     },
   });
 };
 
-const handleOpenEditingModal = (group?: PhotoGroup) => {
+const handleOpenEditingModal = (group?: EquipmentGroup) => {
   groupEditingModal.value = true;
   updateGroup.value = group;
 };
 
-const handleSelectedClick = (group: PhotoGroup) => {
+const handleSelectedClick = (group: EquipmentGroup) => {
   selectedGroup.value = group.metadata.name;
   emit("select", group.metadata.name);
 };
@@ -147,7 +147,7 @@ defineExpose({
     <Transition v-else appear name="fade">
       <Draggable
         v-model="groups"
-        class="photos-box-border photos-h-full photos-w-full photos-divide-y photos-divide-gray-100"
+        class="equipments-box-border equipments-h-full equipments-w-full equipments-divide-y equipments-divide-gray-100"
         group="group"
         handle=".drag-element"
         item-key="metadata.name"
@@ -158,11 +158,11 @@ defineExpose({
           <li @click="handleSelectedClick(group)">
             <VEntity
               :is-selected="selectedGroup === group.metadata.name"
-              class="photos-group"
+              class="equipments-group"
             >
               <template #prepend>
                 <div
-                  class="drag-element photos-absolute photos-inset-y-0 photos-left-0 photos-hidden photos-w-3.5 photos-cursor-move photos-items-center photos-bg-gray-100 photos-transition-all hover:photos-bg-gray-200 group-hover:photos-flex"
+                  class="drag-element equipments-absolute equipments-inset-y-0 equipments-left-0 equipments-hidden equipments-w-3.5 equipments-cursor-move equipments-items-center equipments-bg-gray-100 equipments-transition-all hover:equipments-bg-gray-200 group-hover:equipments-flex"
                 >
                   <IconList class="h-3.5 w-3.5" />
                 </div>
@@ -171,7 +171,7 @@ defineExpose({
               <template #start>
                 <VEntityField
                   :title="group.spec?.displayName"
-                  :description="`${group.status.photoCount || 0} 个图片`"
+                  :description="`${group.status.equipmentCount || 0} 个装备`"
                 ></VEntityField>
               </template>
 
@@ -200,7 +200,7 @@ defineExpose({
     <template v-if="!loading" #footer>
       <Transition appear name="fade">
         <VButton
-          v-permission="['plugin:photos:manage']"
+          v-permission="['plugin:equipments:manage']"
           block
           type="secondary"
           @click="handleOpenEditingModal(undefined)"

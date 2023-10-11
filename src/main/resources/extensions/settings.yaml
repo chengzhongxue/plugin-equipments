@@ -1,7 +1,7 @@
 apiVersion: v1alpha1
 kind: Setting
 metadata:
-  name: plugin-photos-settings
+  name: plugin-equipments-settings
 spec:
   forms:
     - group: base
@@ -11,9 +11,9 @@ spec:
           label: 页面标题
           name: title
           validation: required
-          value: "图库"
+          value: "我的装备"
         - $formkit: text
-          label: 相册列表显示条数
+          label: 装备列表显示条数
           name: pageSize
           validation: required|Number
           value: 20

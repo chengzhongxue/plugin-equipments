@@ -3,5 +3,5 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'plugin-photos'
+rootProject.name = 'plugin-equipments'
 

@@ -61,10 +61,10 @@ jobs:
           version=${version#v}
           sed -i "s/version=.*-SNAPSHOT$/version=$version/1" gradle.properties
           ./gradlew clean build -x test
-      - name: Archive plugin-photos jar
+      - name: Archive plugin-equipments jar
         uses: actions/upload-artifact@v2
         with:
-          name: plugin-photos
+          name: plugin-equipments
           path: |
             build/libs/*.jar
           retention-days: 1
@@ -74,10 +74,10 @@ jobs:
     needs: build
     if: github.event_name == 'release'
     steps:
-      - name: Download plugin-photos jar
+      - name: Download plugin-equipments jar
         uses: actions/download-artifact@v2
         with:
-          name: plugin-photos
+          name: plugin-equipments
           path: build/libs
       - name: Get Name of Artifact
         id: get_artifact
@@ -122,10 +122,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      - name: Download plugin-photos jar
+      - name: Download plugin-equipments jar
         uses: actions/download-artifact@v2
         with:
-          name: plugin-photos
+          name: plugin-equipments
           path: build/libs
       - name: Sync to Halo App Store
         uses: halo-sigs/app-store-release-action@main

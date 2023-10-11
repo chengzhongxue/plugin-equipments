@@ -1,23 +1,23 @@
 import "./styles/tailwind.css";
 import { definePlugin } from "@halo-dev/console-shared";
-import PhotoList from "@/views/PhotoList.vue";
+import EquipmentList from "@/views/EquipmentList.vue";
 import { markRaw } from "vue";
-import RiImage2Line from "~icons/ri/image-2-line";
+import IconComputer  from "~icons/ri/computer-line";
 
 export default definePlugin({
   routes: [
     {
       parentName: "Root",
       route: {
-        path: "/photos",
-        name: "Photos",
-        component: PhotoList,
+        path: "/equipments",
+        name: "Equipments",
+        component: EquipmentList,
         meta: {
-          permissions: ["plugin:photos:view"],
+          permissions: ["plugin:equipments:view"],
           menu: {
-            name: "图库",
+            name: "我的装备",
             group: "content",
-            icon: markRaw(RiImage2Line),
+            icon: markRaw(IconComputer),
           },
         },
       },

@@ -4,13 +4,13 @@ import { computed, nextTick, ref, watch } from "vue";
 import apiClient from "@/utils/api-client";
 import cloneDeep from "lodash.clonedeep";
 import { useMagicKeys } from "@vueuse/core";
-import type { PhotoGroup } from "@/types";
+import type { EquipmentGroup } from "@/types";
 import { reset, submitForm } from "@formkit/core";
 
 const props = withDefaults(
   defineProps<{
     visible: boolean;
-    group: PhotoGroup | null;
+    group: EquipmentGroup | null;
   }>(),
   {
     visible: false,
@@ -23,23 +23,23 @@ const emit = defineEmits<{
   (event: "close"): void;
 }>();
 
-const initialFormState: PhotoGroup = {
+const initialFormState: EquipmentGroup = {
   apiVersion: "core.halo.run/v1alpha1",
-  kind: "PhotoGroup",
+  kind: "EquipmentGroup",
   metadata: {
     name: "",
-    generateName: "photo-group-",
+    generateName: "equipment-group-",
   },
   spec: {
     displayName: "",
     priority: 0,
   },
   status: {
-    photoCount: 0,
+    equipmentCount: 0,
   },
 };
 
-const formState = ref<PhotoGroup>(initialFormState);
+const formState = ref<EquipmentGroup>(initialFormState);
 const saving = ref(false);
 
 const isUpdateMode = computed(() => {
@@ -67,18 +67,18 @@ const handleCreateOrUpdateGroup = async () => {
     saving.value = true;
     if (isUpdateMode.value) {
       await apiClient.put(
-        `/apis/core.halo.run/v1alpha1/photogroups/${formState.value.metadata.name}`,
+        `/apis/core.halo.run/v1alpha1/equipmentgroups/${formState.value.metadata.name}`,
         formState.value
       );
     } else {
       await apiClient.post(
-        "/apis/core.halo.run/v1alpha1/photogroups",
+        "/apis/core.halo.run/v1alpha1/equipmentgroups",
         formState.value
       );
     }
     onVisibleChange(false);
   } catch (e) {
-    console.error("Failed to create photo group", e);
+    console.error("Failed to create equipment group", e);
   } finally {
     saving.value = false;
   }
@@ -93,7 +93,7 @@ const onVisibleChange = (visible: boolean) => {
 
 const handleResetForm = () => {
   formState.value = cloneDeep(initialFormState);
-  reset("photo-group-form");
+  reset("equipment-group-form");
 };
 
 watch(
@@ -111,13 +111,13 @@ const { ControlLeft_Enter, Meta_Enter } = useMagicKeys();
 
 watch(ControlLeft_Enter, (v) => {
   if (v && !isMac) {
-    submitForm("photo-group-form");
+    submitForm("equipment-group-form");
   }
 });
 
 watch(Meta_Enter, (v) => {
   if (v && isMac) {
-    submitForm("photo-group-form");
+    submitForm("equipment-group-form");
   }
 });
 </script>
@@ -129,9 +129,9 @@ watch(Meta_Enter, (v) => {
     @update:visible="onVisibleChange"
   >
     <FormKit
-      id="photo-group-form"
+      id="equipment-group-form"
       v-model="formState.spec"
-      name="photo-group-form"
+      name="equipment-group-form"
       :classes="{ form: 'w-full' }"
       type="form"
       :config="{ validationVisibility: 'submit' }"
@@ -149,7 +149,7 @@ watch(Meta_Enter, (v) => {
             label="分组名称"
             type="text"
             validation="required"
-            help="可根据此名称查询图片"
+            help="可根据此名称查询装备"
           ></FormKit>
         </div>
       </div>
@@ -169,14 +169,14 @@ watch(Meta_Enter, (v) => {
           :key="formState.metadata.name"
           ref="annotationsGroupFormRef"
           :value="formState.metadata.annotations"
-          kind="PhotoGroup"
+          kind="EquipmentGroup"
           group="core.halo.run"
         />
       </div>
     </div>
     <template #footer>
       <VSpace>
-        <VButton type="secondary" @click="submitForm('photo-group-form')">
+        <VButton type="secondary" @click="submitForm('equipment-group-form')">
           提交 {{ `${isMac ? "⌘" : "Ctrl"} + ↵` }}
         </VButton>
         <VButton @click="onVisibleChange(false)">取消 Esc</VButton>

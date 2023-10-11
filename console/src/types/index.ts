@@ -12,16 +12,16 @@ export interface Metadata {
   deletionTimestamp?: string | null;
 }
 
-export interface PhotoGroupSpec {
+export interface EquipmentGroupSpec {
   displayName: string;
   priority?: number;
 }
 
 export interface PostGroupStatus {
-  photoCount: number;
+  equipmentCount: number;
 }
 
-export interface PhotoSpec {
+export interface EquipmentSpec {
   displayName: string;
   description?: string;
   url: string;
@@ -30,38 +30,38 @@ export interface PhotoSpec {
   groupName: string;
 }
 
-export interface Photo {
-  spec: PhotoSpec;
+export interface Equipment {
+  spec: EquipmentSpec;
   apiVersion: string;
   kind: string;
   metadata: Metadata;
 }
 
-export interface PhotoGroup {
-  spec: PhotoGroupSpec;
+export interface EquipmentGroup {
+  spec: EquipmentGroupSpec;
   apiVersion: string;
   kind: string;
   metadata: Metadata;
   status: PostGroupStatus;
 }
 
-export interface PhotoList {
+export interface EquipmentList {
   page: number;
   size: number;
   total: number;
   totalPages: number;
-  items: Array<Photo>;
+  items: Array<Equipment>;
   first: boolean;
   last: boolean;
   hasNext: boolean;
   hasPrevious: boolean;
 }
 
-export interface PhotoGroupList {
+export interface EquipmentGroupList {
   page: number;
   size: number;
   total: number;
-  items: Array<PhotoGroup>;
+  items: Array<EquipmentGroup>;
   first: boolean;
   last: boolean;
   hasNext: boolean;

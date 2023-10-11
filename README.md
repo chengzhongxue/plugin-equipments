@@ -1,28 +1,27 @@
-# plugin-photos
+# plugin-equipments
 
-Halo 2.0 的相册管理插件, 支持在 Console 进行管理以及为主题端提供 `/photos` 页面路由。
+Halo 2.0 的装备管理插件, 支持在 Console 进行管理以及为主题端提供 `/equipments` 页面路由。
 
 ## 使用方式
 
 1. 下载，目前提供以下两个下载方式：
-    - GitHub Releases：访问 [Releases](https://github.com/halo-sigs/plugin-photos/releases) 下载 Assets 中的 JAR 文件。
-    - Halo 应用市场：<https://halo.run/store/apps/app-BmQJW>
+    - GitHub Releases：访问 [Releases](https://github.com/chengzhongxue/plugin-equipments/releases) 下载 Assets 中的 JAR 文件。
 2. 安装，插件安装和更新方式可参考：<https://docs.halo.run/user-guide/plugins>
-3. 安装完成之后，访问 Console 左侧的**图库**菜单项，即可进行管理。
-4. 前台访问地址为 `/photos`，需要注意的是，此插件需要主题提供模板（photos.html）才能访问 `/photos`。
+3. 安装完成之后，访问 Console 左侧的**我的装备**菜单项，即可进行管理。
+4. 前台访问地址为 `/equipments`，需要注意的是，此插件需要主题提供模板（equipments.html）才能访问 `/equipments`。
 
 ## 开发环境
 
 ```bash
-git clone git@github.com:halo-sigs/plugin-photos.git
+git clone git@github.com:chengzhongxue/plugin-equipments.git
 
 # 或者当你 fork 之后
 
-git clone git@github.com:{your_github_id}/plugin-photos.git
+git clone git@github.com:{your_github_id}/plugin-equipments.git
 ```
 
 ```bash
-cd path/to/plugin-photos
+cd path/to/plugin-equipments
 ```
 
 ```bash
@@ -53,25 +52,25 @@ halo:
     lib-directories:
       - "libs"
     fixedPluginPath:
-      - "/path/to/plugin-photos"
+      - "/path/to/plugin-equipments"
 ```
 
 ## 主题适配
 
-目前此插件为主题端提供了 `/photos` 路由，模板为 `photos.html`，也提供了 [Finder API](https://docs.halo.run/developer-guide/theme/finder-apis)，可以将图库列表渲染到任何地方。
+目前此插件为主题端提供了 `/equipments` 路由，模板为 `equipments.html`，也提供了 [Finder API](https://docs.halo.run/developer-guide/theme/finder-apis)，可以将装备列表渲染到任何地方。
 
 ### 模板变量
 
 #### 路由信息
 
-- 模板路径：/templates/photos.html
-- 访问路径：/photos | /photos/page/{page}
+- 模板路径：/templates/equipments.html
+- 访问路径：/equipments | /equipments/page/{page}
 
 #### 路由可选参数
 
-group: 图片分组名称, 对应 [#PhotoGroupVo](#photogroupvo).metadata.name
+group: 装备分组名称, 对应 [#EquipmentGroupVo](#equipmentgroupvo).metadata.name
 
-示例：/photos?group=photo-group-UEcvi | /photos/page/1?group=photo-group-UEcvi
+示例：/equipments?group=equipment-group-UEcvi | /equipments/page/1?group=equipment-group-UEcvi
 
 #### 变量
 
@@ -79,7 +78,7 @@ groups
 
 ##### 变量类型
 
-List<[#PhotoGroupVo](#photogroupvo)>
+List<[#EquipmentGroupVo](#equipmentgroupvo)>
 
 ##### 示例
 
@@ -87,8 +86,8 @@ List<[#PhotoGroupVo](#photogroupvo)>
 <th:block th:each="group : ${groups}">
     <h2 th:text="${group.spec.displayName}"></h2>
     <ul>
-        <li th:each="photo : ${group.photos}">
-            <img th:src="${photo.spec.url}" th:alt="${photo.spec.displayName}" width="280">
+        <li th:each="equipment : ${group.equipments}">
+            <img th:src="${equipment.spec.url}" th:alt="${equipment.spec.displayName}" width="280">
         </li>
     </ul>
 </th:block>
@@ -96,26 +95,26 @@ List<[#PhotoGroupVo](#photogroupvo)>
 
 #### 变量
 
-photos
+equipments
 
 ##### 变量类型
 
-[#UrlContextListResult\<PhotoVo>](#urlcontextlistresult)
+[#UrlContextListResult\<EquipmentVo>](#urlcontextlistresult)
 
 ##### 示例
 
 ```html
 <ul>
-    <li th:each="photo : ${photos.items}">
-        <img th:src="${photo.spec.url}" th:alt="${photo.spec.displayName}" width="280">
+    <li th:each="equipment : ${equipments.items}">
+        <img th:src="${equipment.spec.url}" th:alt="${equipment.spec.displayName}" width="280">
     </li>
 </ul>
-<div th:if="${photos.hasPrevious() || photos.hasNext()}">
-   <a th:href="@{${photos.prevUrl}}">
+<div th:if="${equipments.hasPrevious() || equipments.hasNext()}">
+   <a th:href="@{${equipments.prevUrl}}">
       <span>上一页</span>
    </a>
-   <span th:text="${photos.page}"></span>
-   <a th:href="@{${photos.nextUrl}}">
+   <span th:text="${equipments.page}"></span>
+   <a th:href="@{${equipments.nextUrl}}">
       <span>下一页</span>
    </a>
 </div>
@@ -135,16 +134,16 @@ photos
 
 ##### 返回值
 
-List<[#PhotoGroupVo](#photogroupvo)>
+List<[#EquipmentGroupVo](#equipmentgroupvo)>
 
 ##### 示例
 
 ```html
-<th:block th:each="group : ${photoFinder.groupBy()}">
+<th:block th:each="group : ${equipmentFinder.groupBy()}">
     <h2 th:text="${group.spec.displayName}"></h2>
     <ul>
-        <li th:each="photo : ${group.photos}">
-            <img th:src="${photo.spec.url}" th:alt="${photo.spec.displayName}" width="280">
+        <li th:each="equipment : ${group.equipments}">
+            <img th:src="${equipment.spec.url}" th:alt="${equipment.spec.displayName}" width="280">
         </li>
     </ul>
 </th:block>
@@ -154,7 +153,7 @@ List<[#PhotoGroupVo](#photogroupvo)>
 
 ##### 描述
 
-获取全部图库内容。
+获取全部装备内容。
 
 ##### 参数
 
@@ -162,14 +161,14 @@ List<[#PhotoGroupVo](#photogroupvo)>
 
 ##### 返回值
 
-List<[#PhotoVo](#photovo)>
+List<[#EquipmentVo](#equipmentvo)>
 
 ##### 示例
 
 ```html
 <ul>
-    <li th:each="photo : ${photoFinder.listAll()}" style="display: inline;">
-        <img th:src="${photo.spec.url}" th:alt="${photo.spec.displayName}" width="280">
+    <li th:each="equipment : ${equipmentFinder.listAll()}" style="display: inline;">
+        <img th:src="${equipment.spec.url}" th:alt="${equipment.spec.displayName}" width="280">
     </li>
 </ul>
 ```
@@ -178,22 +177,22 @@ List<[#PhotoVo](#photovo)>
 
 ##### 描述
 
-根据分组获取图片列表。
+根据分组获取装备列表。
 
 ##### 参数
 
-1. `group: string` - 图片分组名称, 对应 PhotoGroupVo.metadata.name
+1. `group: string` - 装备分组名称, 对应 EquipmentGroupVo.metadata.name
 
 ##### 返回值
 
-List<[#PhotoVo](#photovo)>
+List<[#EquipmentVo](#equipmentvo)>
 
 ##### 示例
 
 ```html
 <ul>
-    <li th:each="photo : ${photoFinder.listBy('photo-group-UEcvi')}" style="display: inline;">
-        <img th:src="${photo.spec.url}" th:alt="${photo.spec.displayName}" width="280">
+    <li th:each="equipment : ${equipmentFinder.listBy('equipment-group-UEcvi')}" style="display: inline;">
+        <img th:src="${equipment.spec.url}" th:alt="${equipment.spec.displayName}" width="280">
     </li>
 </ul>
 ```
@@ -202,7 +201,7 @@ List<[#PhotoVo](#photovo)>
 
 ##### 描述
 
-根据分页参数获取图片列表。
+根据分页参数获取装备列表。
 
 ##### 参数
 
@@ -211,19 +210,19 @@ List<[#PhotoVo](#photovo)>
 
 ##### 返回值
 
-[ListResult\<PhotoVo>](#listresult-photovo)
+[ListResult\<EquipmentVo>](#listresult-equipmentvo)
 
 ##### 示例
 
 ```html
-<th:block th:with="photos = ${photoFinder.list(1, 10)}">
+<th:block th:with="equipments = ${equipmentFinder.list(1, 10)}">
     <ul>
-        <li th:each="photo : ${photos.items}">
-            <img th:src="${photo.spec.url}" th:alt="${photo.spec.displayName}" width="280">
+        <li th:each="equipment : ${equipments.items}">
+            <img th:src="${equipment.spec.url}" th:alt="${equipment.spec.displayName}" width="280">
         </li>
     </ul>
     <div>
-        <span th:text="${photos.page}"></span>
+        <span th:text="${equipments.page}"></span>
     </div>
 </th:block>
 ```
@@ -232,36 +231,36 @@ List<[#PhotoVo](#photovo)>
 
 ##### 描述
 
-根据分页参数及图片所在组获取图片列表。
+根据分页参数及装备所在组获取装备列表。
 
 ##### 参数
 
 1. `page: int` - 分页页码，从 1 开始
 2. `size: int` - 分页条数
-3. `group: string` - 图片分组名称, 对应 PhotoGroupVo.metadata.name
+3. `group: string` - 装备分组名称, 对应 EquipmentGroupVo.metadata.name
 
 ##### 返回值
 
-[ListResult\<PhotoVo>](#listresult-photovo)
+[ListResult\<EquipmentVo>](#listresult-equipmentvo)
 
 ##### 示例
 
 ```html
-<th:block th:with="photos = ${photoFinder.list(1, 10, 'photo-group-UEcvi')}">
+<th:block th:with="equipments = ${equipmentFinder.list(1, 10, 'equipment-group-UEcvi')}">
     <ul>
-        <li th:each="photo : ${photos.items}">
-            <img th:src="${photo.spec.url}" th:alt="${photo.spec.displayName}" width="280">
+        <li th:each="equipment : ${equipments.items}">
+            <img th:src="${equipment.spec.url}" th:alt="${equipment.spec.displayName}" width="280">
         </li>
     </ul>
     <div>
-        <span th:text="${photos.page}"></span>
+        <span th:text="${equipments.page}"></span>
     </div>
 </th:block>
 ```
 
 ### 类型定义
 
-#### PhotoVo
+#### EquipmentVo
 
 ```json
 {
@@ -276,9 +275,9 @@ List<[#PhotoVo](#photovo)>
     "creationTimestamp": "2022-11-20T13:06:38.512Z",    // 创建时间
   },
   "spec": {
-    "displayName": "string",                            // 图片名称
-    "description": "string",                            // 图片描述
-    "url": "string",                                    // 图片链接
+    "displayName": "string",                            // 装备名称
+    "description": "string",                            // 装备描述
+    "url": "string",                                    // 装备链接
     "cover": "string",                                  // 封面链接
     "priority": 0,                                      // 优先级
     "groupName": "string",                              // 分组名称，对应分组 metadata.name
@@ -286,7 +285,7 @@ List<[#PhotoVo](#photovo)>
 }
 ```
 
-#### PhotoGroupVo
+#### EquipmentGroupVo
 
 ```json
 {
@@ -305,20 +304,20 @@ List<[#PhotoVo](#photovo)>
     "priority": 0,                                      // 分组优先级
   },
   "status": {
-    "photoCount": 0,                                    // 分组下图片数量
+    "equipmentCount": 0,                                    // 分组下装备数量
   },
-  "photos": "List<#PhotoVo>",                           // 分组下所有图片列表
+  "equipments": "List<#EquipmentVo>",                           // 分组下所有装备列表
 }
 ```
 
-#### ListResult<PhotoVo>
+#### ListResult<EquipmentVo>
 
 ```json
 {
   "page": 0,                                   // 当前页码
   "size": 0,                                   // 每页条数
   "total": 0,                                  // 总条数
-  "items": "List<#PhotoVo>",                   // 图片列表数据
+  "items": "List<#EquipmentVo>",                   // 装备列表数据
   "first": true,                               // 是否为第一页
   "last": true,                                // 是否为最后一页
   "hasNext": true,                             // 是否有下一页
@@ -327,14 +326,14 @@ List<[#PhotoVo](#photovo)>
 }
 ```
 
-#### UrlContextListResult<PhotoVo>
+#### UrlContextListResult<EquipmentVo>
 
 ```json
 {
   "page": 0,                                   // 当前页码
   "size": 0,                                   // 每页条数
   "total": 0,                                  // 总条数
-  "items": "List<#PhotoVo>",                   // 图片列表数据
+  "items": "List<#EquipmentVo>",               // 装备列表数据
   "first": true,                               // 是否为第一页
   "last": true,                                // 是否为最后一页
   "hasNext": true,                             // 是否有下一页
@@ -351,5 +350,5 @@ List<[#PhotoVo](#photovo)>
 
 | 对应模型   | group            | kind       |
 | ---------- | ---------------- | ---------- |
-| 图库       | core.halo.run | Photo       |
-| 图库分组 | core.halo.run | PhotoGroup |
+| 我的装备       | core.halo.run | Equipment       |
+| 装备分组 | core.halo.run | EquipmentGroup |

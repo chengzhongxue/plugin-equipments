@@ -1,20 +1,20 @@
 apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
-  name: PluginPhotos
+  name: PluginEquipments
 spec:
   enabled: true
   version: 1.0.0
   requires: ">=2.8.0"
   author:
-    name: Halo OSS Team
-    website: https://github.com/halo-dev
+    name: 困困鱼
+    website: https://kunkunyu.com
   logo: logo.svg
-  homepage: https://github.com/halo-sigs/plugin-photos
-  configMapName: plugin-photos-configmap
-  settingName: plugin-photos-settings
-  displayName: "图库管理"
-  description: "图库管理模块"
+  homepage: https://github.com/halo-sigs/plugin-equipments
+  configMapName: plugin-equipments-configmap
+  settingName: plugin-equipments-settings
+  displayName: "我的装备管理"
+  description: "我的装备管理模块"
   license:
     - name: "GPL-3.0"
-      url: "https://github.com/halo-sigs/plugin-photos/blob/main/LICENSE"
+      url: "https://github.com/halo-sigs/plugin-equipments/blob/main/LICENSE"

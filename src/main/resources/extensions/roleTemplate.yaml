@@ -1,38 +1,38 @@
 apiVersion: v1alpha1
 kind: Role
 metadata:
-  name: role-template-photos-view
+  name: role-template-equipments-view
   labels:
     halo.run/role-template: "true"
   annotations:
-    rbac.authorization.halo.run/module: "Photos Management"
-    rbac.authorization.halo.run/ui-permissions: '["plugin:photos:view"]'
-    rbac.authorization.halo.run/display-name: "图库查看"
+    rbac.authorization.halo.run/module: "Equipments Management"
+    rbac.authorization.halo.run/ui-permissions: '["plugin:equipments:view"]'
+    rbac.authorization.halo.run/display-name: "装备查看"
 rules:
-  - apiGroups: [ "photos.halo.run"]
-    resources: [ "photos" ]
+  - apiGroups: [ "equipments.halo.run"]
+    resources: [ "equipments" ]
     verbs: [ "get", "list" ]
   - apiGroups: [ "api.plugin.halo.run"]
-    resources: [ "plugins/photos" ]
-    resourceNames: [ "PluginPhotos" ]
+    resources: [ "plugins/equipments" ]
+    resourceNames: [ "PluginEquipments" ]
     verbs: [ "get", "list" ]
 ---
 apiVersion: v1alpha1
 kind: Role
 metadata:
-  name: role-template-photos-manage
+  name: role-template-equipments-manage
   labels:
     halo.run/role-template: "true"
   annotations:
-    rbac.authorization.halo.run/dependencies: '["role-template-photos-view"]'
-    rbac.authorization.halo.run/ui-permissions: '["plugin:photos:manage"]'
-    rbac.authorization.halo.run/module: "Photos Management"
-    rbac.authorization.halo.run/display-name: "图库管理"
+    rbac.authorization.halo.run/dependencies: '["role-template-equipments-view"]'
+    rbac.authorization.halo.run/ui-permissions: '["plugin:equipments:manage"]'
+    rbac.authorization.halo.run/module: "Equipments Management"
+    rbac.authorization.halo.run/display-name: "装备管理"
 rules:
-  - apiGroups: [ "photos.halo.run"]
-    resources: [ "photos" ]
+  - apiGroups: [ "equipments.halo.run"]
+    resources: [ "equipments" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
   - apiGroups: [ "api.plugin.halo.run"]
-    resources: [ "plugins/photos" ]
-    resourceNames: [ "PluginPhotos" ]
+    resources: [ "plugins/equipments" ]
+    resourceNames: [ "PluginEquipments" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
