@@ -29,7 +29,20 @@ halo {
     version = '2.8.0'
 }
 
+
 node {
     pnpmVersion = '8'
     nodeProjectDir = file("${project.projectDir}/console")
+}
+
+task buildFrontend(type: PnpmTask) {
+    args = ['build']
+}
+
+build {
+    // build frontend before build
+    tasks.getByName('compileJava').dependsOn('buildFrontend')
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
 }
