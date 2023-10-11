@@ -33,3 +33,12 @@ node {
     pnpmVersion = '8'
     nodeProjectDir = file("${project.projectDir}/console")
 }
+
+task buildFrontend(type: PnpmTask) {
+    args = ['build']
+}
+
+build {
+    // build frontend before build
+    tasks.getByName('compileJava').dependsOn('buildFrontend')
+}

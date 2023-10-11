@@ -23,7 +23,7 @@ import LazyImage from "@/components/LazyImage.vue";
 import apiClient from "@/utils/api-client";
 import type { Equipment, EquipmentList } from "@/types";
 import Fuse from "fuse.js";
-import RiImage2Line from "~icons/ri/image-2-line";
+import IconComputer  from "~icons/ri/computer-line";
 import type { AttachmentLike } from "@halo-dev/console-shared";
 import { useQuery } from "@tanstack/vue-query";
 
@@ -328,9 +328,9 @@ const pageRefetch = async () => {
     :accepts="['image/*']"
     @select="onAttachmentsSelect"
   />
-  <VPageHeader title="装备">
+  <VPageHeader title="我的装备">
     <template #icon>
-      <RiImage2Line class="equipments-mr-2 equipments-self-center" />
+      <IconComputer class="equipments-mr-2 equipments-self-center" />
     </template>
   </VPageHeader>
   <div class="equipments-p-4">

@@ -157,7 +157,7 @@ const handleSaveEquipment = async () => {
           ></FormKit>
           <FormKit
             name="url"
-            label="装备地址"
+            label="图片地址"
             type="attachment"
             :accepts="['image/*']"
             validation="required"
